@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-50;
+}
+
+#root {
+  @apply max-w-7xl mx-auto bg-white min-h-screen shadow-lg;
+}
