@@ -3,7 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>French Learning App</title>
+    <title>French Learning Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background-color: #f5f5f5;
+      }
+      .card-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      .search-input {
+        font-size: 1.2rem;
+        padding: 1rem;
+        border-radius: 8px;
+        width: 100%;
+        border: 2px solid #e5e7eb;
+        margin-bottom: 2rem;
+      }
+      .search-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+      }
+      .question-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .stats-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0 2rem 0;
+      }
+      .stats-table th, .stats-table td {
+        border: 1px solid #e5e7eb;
+        padding: 0.75rem;
+        text-align: center;
+      }
+      .stats-table th {
+        background-color: #f8fafc;
+        font-weight: 600;
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .badge-type { background-color: #dbeafe; color: #1e40af; }
+      .badge-level { background-color: #dcfce7; color: #166534; }
+      .badge-test { background-color: #f3f4f6; color: #4b5563; }
+    </style>
   </head>
   <body>
     <div id="root"></div>
