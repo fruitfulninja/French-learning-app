@@ -197,7 +197,7 @@ const App = () => {
             case 'CE':
               item.content = fixEncoding(String(row[2] || ''));
               item.choices = fixEncoding(String(row[3] || ''));
-              item.level = 'B1';
+              item.level = String(row[4] || 'B1');
               item.testNum = String(row[0] || '').split('_')[1]?.replace('.docx', '') || '';
               item.questionNum = String(row[1] || '');
               break;
