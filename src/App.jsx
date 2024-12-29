@@ -78,48 +78,48 @@ const StatsTable = ({ data, onCellClick, activeType, activeLevel }) => {
   if (total === 0) return null;
 
   return (
-    <div className="overflow-x-auto mb-4">
-      <div className="text-sm text-gray-600 mb-2">Distribution of search results:</div>
-      <table className="w-full border-collapse border">
+    <div className="overflow-x-auto mb-6">
+      <table className="stats-table">
         <thead>
           <tr>
-            <th className="border p-2 bg-gray-50">Type/Level</th>
+            <th>Type/Level</th>
             {levels.map(level => (
-              <th key={level} className="border p-2 bg-gray-50">{level}</th>
+              <th key={level}>{level}</th>
             ))}
-            <th className="border p-2 bg-gray-50">Total</th>
+            <th>Total</th>
           </tr>
         </thead>
         <tbody>
           {types.map(type => (
             <tr key={type}>
-              <th className="border p-2 bg-gray-50">{type}</th>
+              <th>{type}</th>
               {levels.map(level => (
                 <td
                   key={`${type}-${level}`}
                   onClick={() => onCellClick(type, level)}
-                  className={`border p-2 text-center cursor-pointer ${
-                    activeType === type && activeLevel === level 
-                      ? 'bg-blue-100' 
-                      : matrix[type][level] > 0 ? 'hover:bg-gray-50' : 'bg-gray-50'
-                  }`}
+                  style={{
+                    cursor: 'pointer',
+                    backgroundColor: activeType === type && activeLevel === level 
+                      ? '#dbeafe'
+                      : matrix[type][level] > 0 ? '#ffffff' : '#f8fafc'
+                  }}
                 >
                   {matrix[type][level]}
                 </td>
               ))}
-              <td className="border p-2 text-center bg-gray-50 font-medium">
+              <td className="font-medium">
                 {rowTotals[type]}
               </td>
             </tr>
           ))}
           <tr>
-            <th className="border p-2 bg-gray-50">Total</th>
+            <th>Total</th>
             {levels.map(level => (
-              <td key={level} className="border p-2 text-center bg-gray-50 font-medium">
+              <td key={level} className="font-medium">
                 {colTotals[level]}
               </td>
             ))}
-            <td className="border p-2 text-center bg-gray-100 font-medium">
+            <td className="font-medium bg-gray-50">
               {total}
             </td>
           </tr>
@@ -285,34 +285,32 @@ const App = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl text-gray-600">Loading...</div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-2xl text-gray-600">Loading...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl text-red-600">{error}</div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-2xl text-red-600">{error}</div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">French Learning Questions</h1>
+    <div className="card-container">
+      <h1 className="text-3xl font-bold mb-8 text-gray-800">French Learning Questions</h1>
       
       {/* Search */}
-      <div className="mb-8">
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search in French..."
-          className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-        />
-      </div>
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search in French..."
+        className="search-input"
+      />
 
       {/* Stats Table - Show when searching */}
       {debouncedSearch && (
@@ -326,42 +324,58 @@ const App = () => {
             activeType={typeFilter}
             activeLevel={levelFilter}
           />
-          <div className="text-sm text-gray-600 mt-2">
+          <div className="text-lg text-gray-600">
             Showing {filteredData.length} of {data.length} questions
           </div>
+        </div>
+      )}
+
+      {/* Active Filters */}
+      {(typeFilter || levelFilter) && (
+        <div className="mb-6 flex items-center gap-2">
+          <span className="text-gray-600">Active filters:</span>
+          {typeFilter && (
+            <span 
+              className="badge badge-type cursor-pointer"
+              onClick={() => setTypeFilter(null)}
+            >
+              {typeFilter} ×
+            </span>
+          )}
+          {levelFilter && (
+            <span 
+              className="badge badge-level cursor-pointer"
+              onClick={() => setLevelFilter(null)}
+            >
+              Level {levelFilter} ×
+            </span>
+          )}
         </div>
       )}
 
       {/* Results */}
       <div className="space-y-6">
         {filteredData.map(item => (
-          <div key={item.id} className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition p-6">
-            <div className="flex flex-wrap gap-2 items-center mb-3">
-              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full font-medium text-sm">
-                {item.type}
-              </span>
+          <div key={item.id} className="question-card">
+            <div className="flex flex-wrap gap-2 mb-4">
+              <span className="badge badge-type">{item.type}</span>
               {item.level && (
-                <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
-                  Level {item.level}
-                </span>
+                <span className="badge badge-level">Level {item.level}</span>
               )}
               {item.testNum && (
-                <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
-                  Test {item.testNum}
-                </span>
+                <span className="badge badge-test">Test {item.testNum}</span>
               )}
               {item.questionNum && (
-                <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
-                  Question {item.questionNum}
-                </span>
+                <span className="badge badge-test">Question {item.questionNum}</span>
               )}
             </div>
-            <div className="prose prose-gray max-w-none">
+            
+            <div className="mt-4 text-lg leading-relaxed">
               <div className="text-gray-800 whitespace-pre-wrap">
                 {debouncedSearch ? highlightText(item.content, debouncedSearch) : item.content}
               </div>
               {item.choices && (
-                <div className="mt-4 text-gray-600 whitespace-pre-wrap">
+                <div className="mt-4 text-gray-700 whitespace-pre-wrap border-t pt-4">
                   {debouncedSearch ? highlightText(item.choices, debouncedSearch) : item.choices}
                 </div>
               )}
